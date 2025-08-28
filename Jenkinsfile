@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('github validation') {
             steps {
-                // Always specify branch, since GitHub repos default to 'main' now
+            
                 git branch: 'main', url: 'https://github.com/Dummyboy99/Cloning_Project_26-08-25.git'
             }
         }
@@ -34,8 +34,15 @@ pipeline {
 
         stage('deploy the project on tomcat') {
             steps {
-                // Adjust path: your workspace is "Rohank-pipeline", not "pipeline"
-                sh 'sudo mv target/addressbook.war /home/ubuntu/apache-tomcat-8.5.100/webapps/'
+                
+                stage('Deploy to Tomcat') {
+    steps {
+        sh '''
+            scp -i /path/to/rohank.ppk target/addressbook.war ec2-user@10.0.1.224:/home/ec2-user/apache-tomcat-8.5.100/webapps/
+        '''
+    }
+}
+
             }
         }
     }
